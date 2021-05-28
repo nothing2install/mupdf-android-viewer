@@ -145,6 +145,7 @@
 			android:background="@color/toolbar"
 			android:thumb="@drawable/seek_thumb"
 			android:progressDrawable="@drawable/seek_line"
+			android:focusable="false"
 			/>
 
 		<TextView

@@ -12,8 +12,10 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -917,7 +919,8 @@ public class ReaderView
 					pushHistory();
 					setDisplayedViewIndex(page);
 				}
-			} else if (e.getX() < tapPageMargin) {
+			}
+			/*else if (e.getX() < tapPageMargin) {
 				smartMoveBackwards();
 			} else if (e.getX() > super.getWidth() - tapPageMargin) {
 				smartMoveForwards();
@@ -925,7 +928,7 @@ public class ReaderView
 				smartMoveBackwards();
 			} else if (e.getY() > super.getHeight() - tapPageMargin) {
 				smartMoveForwards();
-			} else {
+			}*/ else {
 				onTapMainDocArea();
 			}
 		}

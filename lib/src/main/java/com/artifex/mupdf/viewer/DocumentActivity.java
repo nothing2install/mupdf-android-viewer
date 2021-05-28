@@ -22,6 +22,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -39,6 +40,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import androidx.core.app.ActivityCompat;
@@ -126,7 +128,23 @@ public class DocumentActivity extends Activity
 		}
 		return core;
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (this.mDocView != null) {
+					this.mDocView.smartMoveBackwards();
+				}
+				return true;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (this.mDocView != null) {
+					this.mDocView.smartMoveForwards();
+				}
+				return true;
+			default:
+				return super.onKeyDown(keyCode, event);
+		}
+	}
 	private MuPDFCore openBuffer(byte buffer[], String magic)
 	{
 		System.out.println("Trying to open byte buffer");
@@ -304,7 +322,7 @@ public class DocumentActivity extends Activity
 
 			@Override
 			protected void onDocMotion() {
-				hideButtons();
+				//hideButtons();
 			}
 
 			@Override
@@ -354,11 +372,13 @@ public class DocumentActivity extends Activity
 				mDocView.setDisplayedViewIndex((seekBar.getProgress()+mPageSliderRes/2)/mPageSliderRes);
 			}
 
-			public void onStartTrackingTouch(SeekBar seekBar) {}
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
 
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				updatePageNumView((progress+mPageSliderRes/2)/mPageSliderRes);
+				//mDocView.setDisplayedViewIndex((seekBar.getProgress()+mPageSliderRes/2)/mPageSliderRes);
 			}
 		});
 
@@ -600,6 +620,7 @@ public class DocumentActivity extends Activity
 				showKeyboard();
 			}
 
+			/*
 			Animation anim = new TranslateAnimation(0, 0, -mTopBarSwitcher.getHeight(), 0);
 			anim.setDuration(200);
 			anim.setAnimationListener(new Animation.AnimationListener() {
@@ -610,8 +631,9 @@ public class DocumentActivity extends Activity
 				public void onAnimationEnd(Animation animation) {}
 			});
 			mTopBarSwitcher.startAnimation(anim);
+*/
 
-			anim = new TranslateAnimation(0, 0, mPageSlider.getHeight(), 0);
+			Animation anim = new TranslateAnimation(0, 0, mPageSlider.getHeight(), 0);
 			anim.setDuration(200);
 			anim.setAnimationListener(new Animation.AnimationListener() {
 				public void onAnimationStart(Animation animation) {
@@ -631,6 +653,7 @@ public class DocumentActivity extends Activity
 			mButtonsVisible = false;
 			hideKeyboard();
 
+			/*
 			Animation anim = new TranslateAnimation(0, 0, 0, -mTopBarSwitcher.getHeight());
 			anim.setDuration(200);
 			anim.setAnimationListener(new Animation.AnimationListener() {
@@ -641,8 +664,9 @@ public class DocumentActivity extends Activity
 				}
 			});
 			mTopBarSwitcher.startAnimation(anim);
+			*/
 
-			anim = new TranslateAnimation(0, 0, 0, mPageSlider.getHeight());
+			Animation anim = new TranslateAnimation(0, 0, 0, mPageSlider.getHeight());
 			anim.setDuration(200);
 			anim.setAnimationListener(new Animation.AnimationListener() {
 				public void onAnimationStart(Animation animation) {
@@ -759,7 +783,9 @@ public class DocumentActivity extends Activity
 
 	@Override
 	public void onBackPressed() {
-		if (!mDocView.popHistory())
-			super.onBackPressed();
+		if (!mDocView.popHistory()) {
+			//super.onBackPressed();
+			//Toast.makeText(this, "nope", 500).show();
+		}
 	}
 }
